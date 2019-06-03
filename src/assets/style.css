@@ -6,9 +6,11 @@ body{
 }
 
 #header{  
-  background-color: #675c47;  
+  width: 100%;
+  background-color: rgb(56, 56, 136);  
   margin: 10px 10px 0px 10px;  
-  height: 108px; 
+  height: 108px;
+  border: 2px solid grey; 
 } 
 
 #header #headerSlogan { 
@@ -22,4 +24,26 @@ body{
   padding: 10px;
   margin: auto;
   margin-top: 5%;
+}
+
+#headerSlogan{
+  background-color: rgb(88, 88, 209);
+  text-align: center;
+  height: 110px;
+  width: 225px;
+  border-left: 2px solid grey;
+  color: white;
+}
+
+#headerLogo{
+  margin-block-start: 20px;
+  margin-left: 20px;
+  height: 70px;
+  width: 70px;
+  vertical-align: middle;
+}
+
+#titulo{
+  margin: 25px;
+  color: white;
 }
