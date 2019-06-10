@@ -3,26 +3,31 @@ function setup(){
 }
 
 function showDefaultWeather(){
-  setDefaultWeather();
+  setWeather({localidad:"piñeyro",pais:"ar"});
+}
+
+function pasarACelsius(gradosKelvin){
+  return (gradosKelvin-273.15).toFixed(2)
 }
 
 function getWeatherDataFor(response){
   var currentDate = new Date;
-  var defaultWather ={
+  var weather ={
     date : currentDate.toLocaleDateString(),
-    location : response.sys.country,
-    degrees : response.main.temp,
+    location : response.name+" "+response.sys.country,
+    degrees : pasarACelsius(response.main.temp),
     imageUrl :  `http://openweathermap.org/img/w/${response.weather[0].icon}.png`,
-    description : response.weather.description
+    description : response.weather[0].description
   };  
-  return defaultWather;
+  return weather;
 }
 
-function setDefaultWeather(){
+function setWeather(localidad){
+  var locationParameter= `&q=${localidad.localidad}${localidad.pais===null?'':','+localidad.pais}`
   var currentDate = new Date;
-  var datosPinierio = 
+  var baseUrl= 'http://api.openweathermap.org/data/2.5/weather?appid=01ff1417eeb4a81b09ac68b15958d453';
   $.ajax({
-    url: 'http://api.openweathermap.org/data/2.5/weather?appid=01ff1417eeb4a81b09ac68b15958d453&q=pi%C3%B1eyro,ar',
+    url: `${baseUrl}${locationParameter}`,
     success: function(respuesta) {
       var datosPinierio = getWeatherDataFor(respuesta);
       showWeather(datosPinierio);
@@ -33,6 +38,20 @@ function setDefaultWeather(){
   });
 }
 
+function getLocation(){
+  var searchText=document.getElementById("busqueda").value.split(',');
+  var location={
+    localidad: searchText[0],
+    pais: searchText.length==2?searchText[1]:null
+  }
+  return location;
+}
+
+function recargarCiudad(){
+  var ciudad =getLocation();
+  setWeather(ciudad);
+}
+
 function showWeather(weather){
   $('#lugar').text(weather.location);
   $('#fecha').text(weather.date);
@@ -40,8 +59,6 @@ function showWeather(weather){
   $("#temperatura").text(weather.degrees);
   $('#descripcion').text(weather.description);
 }
-
-/*lasolUndav/pes*/ 
 
 $(document).ready(function() {
   setup();
